@@ -1,6 +1,6 @@
 {
   "name": "angular-http-harness",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Angular library for seamless migration from `$http` to `Http`.",
   "scripts": {
     "prepublish": "npm run build:lib",
@@ -24,6 +24,11 @@
   ],
   "author": "Suguru Inatomi <laco0416@gmail.com>",
   "license": "MIT",
+  "peerDependencies": {
+    "angular": "*",
+    "angular2": "*",
+    "rxjs": "*"
+  },
   "devDependencies": {
     "angular": "^1.5.3",
     "angular-mocks": "^1.5.3",
