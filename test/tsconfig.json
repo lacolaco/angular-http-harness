@@ -1,0 +1,40 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "outDir": "../build"
+    },
+    "filesGlob": [
+        "../index.ts",
+        "**/*.ts",
+        "../src/**/*.ts",
+        "!../**/*.d.ts",
+        "../typings/mocha/mocha.d.ts",
+        "../typings/power-assert/power-assert.d.ts",
+        "../typings/angularjs/angular.d.ts",
+        "../typings/angularjs/angular-mocks.d.ts",
+        "../node_modules/rxjs/Rx.d.ts",
+        "../node_modules/typescript/lib/lib.es6.d.ts"
+    ],
+    "files": [
+        "../index.ts",
+        "index.spec.ts",
+        "ng1/test.service.spec.ts",
+        "ng1/test.service.ts",
+        "ng2/test.service.spec.ts",
+        "ng2/test.service.ts",
+        "test.model.ts",
+        "test.service.ts",
+        "../src/http.ts",
+        "../typings/mocha/mocha.d.ts",
+        "../typings/power-assert/power-assert.d.ts",
+        "../typings/angularjs/angular.d.ts",
+        "../typings/angularjs/angular-mocks.d.ts",
+        "../node_modules/rxjs/Rx.d.ts",
+        "../node_modules/typescript/lib/lib.es6.d.ts"
+    ]
+}

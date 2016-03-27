@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": true,
+        "declaration": true,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "filesGlob": [
+        "**/*.ts",
+        "!**/*.d.ts",
+        "!test/**/*.ts",
+        "!node_modules/**/*.*",
+        "typings/angularjs/angular.d.ts",
+        "node_modules/rxjs/Rx.d.ts",
+        "node_modules/typescript/lib/lib.es6.d.ts"
+    ],
+    "files": [
+        "index.ts",
+        "src/http.ts",
+        "typings/angularjs/angular.d.ts",
+        "node_modules/rxjs/Rx.d.ts",
+        "node_modules/typescript/lib/lib.es6.d.ts"
+    ]
+}

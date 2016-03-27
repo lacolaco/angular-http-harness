@@ -1,0 +1,47 @@
+{
+  "name": "angular-http-harness",
+  "version": "1.0.0",
+  "description": "Angular library for seamless migration from `$http` to `Http`.",
+  "scripts": {
+    "prepublish": "npm run build:lib",
+    "tsconfig:lib": "tsconfig -u tsconfig.json",
+    "build:lib": "tsc -p .",
+    "prebuild:lib": "npm run tsconfig:lib",
+    "test": "karma start",
+    "pretest": "npm run build:test && npm run espower",
+    "tsconfig:test": "tsconfig -u test/tsconfig.json",
+    "build:test": "tsc -p test && browserify -o build/test/bundle.spec.js build/test/index.spec.js",
+    "prebuild:test": "npm run tsconfig:test",
+    "espower": "espower build/test/bundle.spec.js > build/test/bundle.spec.espowered.js"
+  },
+  "repository": {
+    "url": "https://github.com/laco0416/angular-http-harness"
+  },
+  "keywords": [
+    "angular2",
+    "angular",
+    "angularjs"
+  ],
+  "author": "Suguru Inatomi <laco0416@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "angular": "^1.5.3",
+    "angular-mocks": "^1.5.3",
+    "angular2": "^2.0.0-beta.12",
+    "angular2-testing-micro": "^1.0.0",
+    "browserify": "^13.0.0",
+    "core-js": "^2.2.1",
+    "espower-cli": "^1.0.0",
+    "karma": "^0.13.22",
+    "karma-mocha": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "mocha": "^2.4.5",
+    "phantomjs-prebuilt": "^2.1.6",
+    "power-assert": "^1.3.1",
+    "reflect-metadata": "^0.1.2",
+    "rxjs": "^5.0.0-beta.2",
+    "tsconfig-cli": "^1.0.2",
+    "typescript": "^1.8.9",
+    "zone.js": "^0.6.6"
+  }
+}
