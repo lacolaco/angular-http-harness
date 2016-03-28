@@ -1,6 +1,6 @@
 {
   "name": "angular-http-harness",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Angular library for seamless migration from `$http` to `Http`.",
   "scripts": {
     "prepublish": "npm run build:lib",
