@@ -3,7 +3,7 @@
  */
 
 import {Http, RequestOptionsArgs, Response, ResponseOptions, Headers} from "./mock/http";
-import {Observable} from "rxjs/Observable";
+import {Observable, Observer} from "rxjs/Rx";
 
 import Ng1Http = angular.IHttpService;
 
@@ -14,23 +14,22 @@ export interface ObservableHttp {
     delete(url: string, options?: RequestOptionsArgs): Observable<Response>;
 }
 
-function wrapNg1Promise(p: angular.IHttpPromise<any>): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-        p.then(resp => {
-            resolve(resp);
-        }).catch(error => {
-            reject(error);
+function wrapNg1Promise(p: angular.IHttpPromise<any>): Observable<Response> {
+    return Observable.create((observer: Observer<Response>) => {
+        p.then((resp: angular.IHttpPromiseCallbackArg<any>) => {
+            observer.next(new Response(wrapNg1Response(resp)).json());
+        }).catch(resp => {
+            observer.error(new Response(wrapNg1Response(resp)));
         });
     });
 }
 
-function wrapNg1Response(url: string, resp: angular.IHttpPromiseCallbackArg<any>): ResponseOptions {
+function wrapNg1Response(resp: angular.IHttpPromiseCallbackArg<any>): ResponseOptions {
     return new ResponseOptions({
         body: resp.data,
         status: resp.status,
         headers: new Headers(resp.headers),
         statusText: resp.statusText,
-        url: url
     });
 }
 
@@ -38,9 +37,9 @@ function wrapNg1Response(url: string, resp: angular.IHttpPromiseCallbackArg<any>
  * Wrapped http services as a common interface.
  * HttpHarness allows you to separate a DI process and a http process.
  *
- * 
- * ## Shared code: `TestService` as an abstract class 
- * 
+ *
+ * ## Shared code: `TestService` as an abstract class
+ *
  * ```
  * export abstract class TestService {
  *    private http: HttpHarness;
@@ -76,31 +75,19 @@ export class HttpHarness implements ObservableHttp {
         return new HttpHarness({
             get: (url: string, options?: RequestOptionsArgs): Observable<Response> => {
                 let p = ng1Http.get<any>(url, options);
-                return Observable.fromPromise<any>(wrapNg1Promise(p))
-                    .map((resp: angular.IHttpPromiseCallbackArg<any>) => {
-                        return new Response(wrapNg1Response(url, resp));
-                    });
+                return wrapNg1Promise(p);
             },
             post: (url: string, body: string, options?: RequestOptionsArgs): Observable<Response> => {
                 let p = ng1Http.post<any>(url, body, options);
-                return Observable.fromPromise<any>(wrapNg1Promise(p))
-                    .map((resp: angular.IHttpPromiseCallbackArg<any>) => {
-                        return new Response(wrapNg1Response(url, resp));
-                    });
+                return wrapNg1Promise(p);
             },
             put: (url: string, body: string, options?: RequestOptionsArgs): Observable<Response> => {
                 let p = ng1Http.put<any>(url, body, options);
-                return Observable.fromPromise<any>(wrapNg1Promise(p))
-                    .map((resp: angular.IHttpPromiseCallbackArg<any>) => {
-                        return new Response(wrapNg1Response(url, resp));
-                    });
+                return wrapNg1Promise(p);
             },
             delete: (url: string, options?: RequestOptionsArgs): Observable<Response> => {
                 let p = ng1Http.delete<any>(url, options);
-                return Observable.fromPromise<any>(wrapNg1Promise(p))
-                    .map((resp: angular.IHttpPromiseCallbackArg<any>) => {
-                        return new Response(wrapNg1Response(url, resp));
-                    });
+                return wrapNg1Promise(p);
             },
         });
     };
