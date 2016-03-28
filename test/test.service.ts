@@ -16,4 +16,9 @@ export abstract class TestService {
         return this.http.get(`/${id}`)
             .map(resp => resp.json() as TestModel);
     }
+
+    post(data: TestModel): Observable<TestModel> {
+        return this.http.post(`/`, JSON.stringify(data))
+            .map(resp => resp.json() as TestModel);
+    }
 }

@@ -5,6 +5,7 @@ import {MockBackend, MockConnection} from "angular2/http/testing";
 import {provide} from "angular2/core";
 import {Ng2TestService} from "./test.service";
 import {TestModel} from "../test.model";
+import {TestService} from "../test.service";
 
 import assert = require("power-assert");
 
@@ -20,16 +21,16 @@ describe("Angular 2 TestService", () => {
                     return new Http(backend, options);
                 }, deps: [MockBackend, BaseRequestOptions]
             }),
-            Ng2TestService
+            provide(TestService, {useClass: Ng2TestService})
         ]);
     });
 
-    it("can instantiate", inject([Ng2TestService], (service: Ng2TestService) => {
+    it("can instantiate", inject([TestService], (service: TestService) => {
         assert(!!service);
     }));
 
     it("get(id) should return mocked TestModel", done => {
-        inject([MockBackend, Ng2TestService], (backend: MockBackend, service: Ng2TestService) => {
+        inject([MockBackend, TestService], (backend: MockBackend, service: TestService) => {
             backend.connections.subscribe((c: MockConnection) => {
                 let resp = <TestModel>{text: "mocked!"};
                 c.mockRespond(
@@ -40,6 +41,29 @@ describe("Angular 2 TestService", () => {
                 );
             });
             service.get("test").subscribe(
+                resp => {
+                    assert(!!resp);
+                    assert(resp.text === "mocked!");
+                    done();
+                },
+                error => {
+                    assert(!error);
+                    done();
+                });
+        })(); // execute
+    });
+
+    it("post(data) should return mocked TestModel", done => {
+        inject([MockBackend, TestService], (backend: MockBackend, service: TestService) => {
+            backend.connections.subscribe((c: MockConnection) => {
+                c.mockRespond(
+                    new Response(new ResponseOptions({
+                        status: 200,
+                        body: c.request.text(),
+                    }))
+                );
+            });
+            service.post({text: "mocked!"}).subscribe(
                 resp => {
                     assert(!!resp);
                     assert(resp.text === "mocked!");

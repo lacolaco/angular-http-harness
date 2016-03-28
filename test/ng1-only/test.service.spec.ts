@@ -30,4 +30,19 @@ describe("Angular 1 TestService", () => {
             $httpBackend.flush();
         });
     });
+
+    it("post(data) should return mocked TestModel", done => {
+        inject(($httpBackend: angular.IHttpBackendService, testService: TestService) => {
+            $httpBackend.expectPOST("/").respond((method, url, data, headers) => [200, data, {}]);
+            testService.post(<TestModel>{text: "mocked!"}).subscribe(
+                resp => {
+                    assert(resp.text === "mocked!");
+                    done();
+                }, error => {
+                    console.error(error);
+                    done();
+                });
+            $httpBackend.flush();
+        });
+    });
 });
