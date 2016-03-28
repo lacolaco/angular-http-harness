@@ -1,5 +1,5 @@
 import {TestModel} from "../test.model.ts";
-import {Ng1TestService} from "./test.service.ts";
+import {TestService} from "./test.service.ts";
 
 import assert = require("power-assert");
 
@@ -10,14 +10,14 @@ describe("Angular 1 TestService", () => {
     });
 
     it("can instantiate", done => {
-        inject((testService: Ng1TestService) => {
+        inject((testService: TestService) => {
             assert(!!testService);
             done();
         });
     });
 
     it("get(id) should return mocked TestModel", done => {
-        inject(($httpBackend: angular.IHttpBackendService, testService: Ng1TestService) => {
+        inject(($httpBackend: angular.IHttpBackendService, testService: TestService) => {
             $httpBackend.expectGET("").respond(200, <TestModel>{text: "mocked!"});
             testService.get("test").subscribe(
                 resp => {

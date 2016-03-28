@@ -1,11 +1,19 @@
-import {TestService} from "../test.service.ts";
-import {HttpHarness} from "../../src/harness";
+import {Observable} from "rxjs/Observable";
+import {HttpHarness} from "../../ng1-only";
+import {TestModel} from "../test.model";
 
-export class Ng1TestService extends TestService {
+/**
+ * TestService base class
+ */
+export abstract class TestService {
+    private http: HttpHarness;
 
-    constructor($http: angular.IHttpService) {
-        super(HttpHarness.fromNg1($http));
+    constructor(http: HttpHarness) {
+        this.http = http;
+    }
+
+    get(id: string): Observable<TestModel> {
+        return this.http.get(`/${id}`)
+            .map(resp => resp.json() as TestModel);
     }
 }
-
-angular.module("app").service("testService", ["$http", Ng1TestService]);

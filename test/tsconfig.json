@@ -25,6 +25,7 @@
         "../index.ts",
         "../ng1-only.ts",
         "index.spec.ts",
+        "ng1-only/ng1.test.service.ts",
         "ng1-only/test.service.spec.ts",
         "ng1-only/test.service.ts",
         "ng1/test.service.spec.ts",

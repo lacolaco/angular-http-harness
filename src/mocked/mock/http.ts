@@ -5,29 +5,88 @@ import {ObservableHttp} from "../harness";
  * angular2/http mock
  */
 
-export declare class Http implements ObservableHttp {
+/**
+ * Dummy :P
+ */
+export class Http implements ObservableHttp {
+
+    get(url: string, options?: RequestOptionsArgs): Observable<Response> {
+        return null;
+    }
+
+    post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+        return null;
+    }
+
+    put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+        return null;
+    }
+
+    delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
+        return null;
+    }
+}
+
+export interface RequestOptionsArgs {
+    url?: string;
+    method?: string;
+    headers?: Headers;
+    body?: string;
+}
+
+export class Response {
+    url: string;
+    status: number;
+    statusText: string;
+    headers: Headers;
+    private _body: string | any;
+    constructor(responseOptions: ResponseOptions) {
+        this.status = responseOptions.status;
+        this.statusText = responseOptions.statusText;
+        this.headers = responseOptions.headers;
+        this._body = responseOptions.body;
+        this.url = responseOptions.url;
+    }
     
-    get(url: string, options?: RequestOptionsArgs): Observable<Response>;
-
-    post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response>;
-
-    put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response>;
-
-    delete(url: string, options?: RequestOptionsArgs): Observable<Response>;
+    json(): any {
+        if (typeof this._body === "string") {
+            return JSON.parse(this._body);
+        } else {
+            return this._body;
+        }
+    }
 }
 
-export declare class RequestOptionsArgs {
+export interface ResponseOptionsArgs {
+    body?: string | Object;
+    status?: number;
+    statusText?: string;
+    headers?: Headers;
+    url?: string;
 }
 
-export declare class Response {
-    constructor(options: ResponseOptions);
-    json(): any;
+export class ResponseOptions {
+
+    body: string | Object;
+    status: number;
+    headers: Headers;
+    statusText: string;
+    url: string;
+
+    constructor(optionArgs: ResponseOptionsArgs) {
+        this.body = optionArgs.body;
+        this.status = optionArgs.status;
+        this.headers = optionArgs.headers;
+        this.statusText = optionArgs.statusText;
+        this.url = optionArgs.url;
+    }
 }
 
-export declare class ResponseOptions {
-    constructor(optionArgs: any);
-}
-
-export declare class Headers {
-    constructor(ng1Headers?: angular.IHttpHeadersGetter);
+export class Headers {
+    constructor(private headers?: {[key: string]: any;}) {
+    }
+    
+    get(header: string): any {
+        return this.headers[header];
+    }
 }
