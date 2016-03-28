@@ -12,7 +12,6 @@
         "**/*.ts",
         "!**/*.d.ts",
         "!test/**/*.ts",
-        "!test-without-ng2/**/*.ts",
         "!node_modules/**/*.*",
         "typings/angularjs/angular.d.ts",
         "node_modules/rxjs/Rx.d.ts",
