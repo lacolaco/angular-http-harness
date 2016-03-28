@@ -24,9 +24,11 @@
   ],
   "author": "Suguru Inatomi <laco0416@gmail.com>",
   "license": "MIT",
+  "optionalDependencies": {
+    "angular2": "*"
+  },
   "peerDependencies": {
     "angular": "*",
-    "angular2": "*",
     "rxjs": "*"
   },
   "devDependencies": {

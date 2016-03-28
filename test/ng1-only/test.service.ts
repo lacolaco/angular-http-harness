@@ -1,4 +1,4 @@
-import {TestService} from "../test.service";
+import {TestService} from "../test.service.ts";
 import {HttpHarness} from "../../src/harness";
 
 export class Ng1TestService extends TestService {

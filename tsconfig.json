@@ -19,7 +19,10 @@
     ],
     "files": [
         "index.ts",
-        "src/http.ts",
+        "ng1-only.ts",
+        "src/harness.ts",
+        "src/mocked/harness.ts",
+        "src/mocked/mock/http.ts",
         "typings/angularjs/angular.d.ts",
         "node_modules/rxjs/Rx.d.ts",
         "node_modules/typescript/lib/lib.es6.d.ts"
