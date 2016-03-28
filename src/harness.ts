@@ -51,7 +51,7 @@ function wrapNg1Response(url: string, resp: angular.IHttpPromiseCallbackArg<any>
  *    }
  * }
  * ```
- * 
+ *
  * ## Angular 1 code: `Ng1TestService` as an entry point for `$http`
  * Use `HttpHarness.fromNg1`
  *
@@ -62,13 +62,13 @@ function wrapNg1Response(url: string, resp: angular.IHttpPromiseCallbackArg<any>
  *         super(HttpHarness.fromNg1($http));
  *     }
  * }
- * 
+ *
  * angular.module("app").service("testService", ["$http", Ng1TestService]);
  * ```
- * 
+ *
  * ## Angular 2 code: `Ng2TestService` as an entry point for `Http`
  * Use `HttpHarness.fromNg2`
- * 
+ *
  * ```
  * @Injectable()
  * export class Ng2TestService extends TestService {

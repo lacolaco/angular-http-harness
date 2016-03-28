@@ -75,6 +75,25 @@ export class Ng1TestService extends TestService {
 angular.module("app").service("testService", ["$http", Ng1TestService]);
 ```
 
+#### Use in only Angular 1
+
+If you want to avoid installation of `angular2`, you can use `angular-http-harness/ng1-only`;
+
+```
+import {HttpHarness} from "angular-http-harness/ng1-only";
+
+export class Ng1TestService extends TestService {
+
+    constructor($http: angular.IHttpService) {
+        super(HttpHarness.fromNg1($http));
+    }
+}
+
+angular.module("app").service("testService", ["$http", Ng1TestService]);
+```
+
+`angular-http-harness/ng1-only` module doesn't have any dependencies of `angular2/*`.
+
 ### Angular 2 code: `Ng2TestService` as an entry point for `Http`
 Use `HttpHarness.fromNg2`
 
