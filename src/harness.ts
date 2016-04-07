@@ -14,6 +14,7 @@ function wrapNg1Promise(p: angular.IHttpPromise<any>): Observable<Response> {
     return Observable.create((observer: Observer<Response>) => {
         p.then((resp: angular.IHttpPromiseCallbackArg<any>) => {
             observer.next(new Response(wrapNg1Response(resp)));
+            observer.complete();
         }).catch(resp => {
             observer.error(new Response(wrapNg1Response(resp)));
         });
