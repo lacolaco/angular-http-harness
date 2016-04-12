@@ -1,10 +1,21 @@
+import {Observable} from "rxjs/Observable";
+import {HttpHarness} from "../../index";
+import {fromNg1} from "../../ng1";
 import {TestService} from "../test.service";
-import {HttpHarness} from "../../src/harness";
+import {TestModel} from "../test.model";
 
 export class Ng1TestService extends TestService {
 
     constructor($http: angular.IHttpService) {
-        super(HttpHarness.fromNg1($http));
+        super(new HttpHarness(fromNg1($http)));
+    }
+    
+    get(id: string): Observable<TestModel> {
+        return super.get(id).map(resp => resp.data);
+    }
+
+    post(data: TestModel): Observable<TestModel> {
+        return super.post(data).map(resp => resp.data);
     }
 }
 

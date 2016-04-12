@@ -48,6 +48,8 @@ Implement a service **except for DI**.
 Use `HttpHarness` instead of `$http` or `Http`.
 
 ```
+import {HttpHarness} from "angular-http-harness";
+
 export abstract class TestService {
    private http: HttpHarness;
 
@@ -55,54 +57,45 @@ export abstract class TestService {
        this.http = http;
    }
 
-   get(id: string): Observable<TestModel> {
-       return this.http.get(`/${id}`)
-           .map(resp => resp.json() as TestModel);
+   get(id: string): Observable<any> {
+       return this.http.get(`/${id}`);
    }
 }
 ```
 
 ### Angular 1 code: `Ng1TestService` as an entry point for `$http`
-Use `HttpHarness.fromNg1`.
-```
-export class Ng1TestService extends TestService {
+Use `fromNg1`.
 
+```
+import {HttpHarness} from "angular-http-harness";
+import {fromNg1} from "angular-http-harness/ng1";
+export class Ng1TestService extends TestService {
     constructor($http: angular.IHttpService) {
-        super(HttpHarness.fromNg1($http));
+        super(new HttpHarness(fromNg1($http)));
+    }
+
+    get(id: string): Observable<TestModel> {
+        return super.get(id).map(resp => resp.data);
     }
 }
-
 angular.module("app").service("testService", ["$http", Ng1TestService]);
 ```
-
-#### Use in only Angular 1
-
-If you want to avoid installation of `angular2`, you can use `angular-http-harness/ng1-only`;
-
-```
-import {HttpHarness} from "angular-http-harness/ng1-only";
-
-export class Ng1TestService extends TestService {
-
-    constructor($http: angular.IHttpService) {
-        super(HttpHarness.fromNg1($http));
-    }
-}
-
-angular.module("app").service("testService", ["$http", Ng1TestService]);
-```
-
-`angular-http-harness/ng1-only` module doesn't have any dependencies of `angular2/*`.
 
 ### Angular 2 code: `Ng2TestService` as an entry point for `Http`
-Use `HttpHarness.fromNg2`
+Use `fromNg2`
 
 ```
+import {HttpHarness} from "angular-http-harness";
+import {fromNg2} from "angular-http-harness/ng2";
+
 @Injectable()
 export class Ng2TestService extends TestService {
+    constructor(_http: Http) {
+        super(new HttpHarness(fromNg2(_http)));
+    }
 
-    constructor(private _http: Http) {
-        super(HttpHarness.fromNg2(_http));
+    get(id: string): Observable<TestModel> {
+        return super.get(id).map(resp => resp.json());
     }
 }
 ```

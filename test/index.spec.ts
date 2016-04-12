@@ -19,5 +19,3 @@ import "./ng1/test.service"
 import "./ng1/test.service.spec";
 
 import "./ng2/test.service.spec";
-
-import "./ng1-only/test.service.spec";

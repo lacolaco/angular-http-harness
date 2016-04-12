@@ -1,33 +1,10 @@
-import {Http, RequestOptionsArgs, Response, ResponseOptions, Headers} from "angular2/http";
-import {Observable, Observer} from "rxjs/Rx";
-
-import Ng1Http = angular.IHttpService;
+import {Observable} from "rxjs/Rx";
 
 export interface ObservableHttp {
-    get(url: string, options?: RequestOptionsArgs): Observable<Response>;
-    post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response>;
-    put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response>;
-    delete(url: string, options?: RequestOptionsArgs): Observable<Response>;
-}
-
-function wrapNg1Promise(p: angular.IHttpPromise<any>): Observable<Response> {
-    return Observable.create((observer: Observer<Response>) => {
-        p.then((resp: angular.IHttpPromiseCallbackArg<any>) => {
-            observer.next(new Response(wrapNg1Response(resp)));
-            observer.complete();
-        }).catch(resp => {
-            observer.error(new Response(wrapNg1Response(resp)));
-        });
-    });
-}
-
-function wrapNg1Response(resp: angular.IHttpPromiseCallbackArg<any>): ResponseOptions {
-    return new ResponseOptions({
-        body: resp.data,
-        status: resp.status,
-        headers: new Headers(resp.headers),
-        statusText: resp.statusText,
-    });
+    get(url: string, options?: any): Observable<any>;
+    post(url: string, body: any, options?: any): Observable<any>;
+    put(url: string, body: any, options?: any): Observable<any>;
+    delete(url: string, options?: any): Observable<any>;
 }
 
 /**
@@ -38,6 +15,8 @@ function wrapNg1Response(resp: angular.IHttpPromiseCallbackArg<any>): ResponseOp
  * ## Shared code: `TestService` as an abstract class
  *
  * ```
+ * import {HttpHarness} from "angular-http-harness";
+ *
  * export abstract class TestService {
  *    private http: HttpHarness;
  *
@@ -45,83 +24,70 @@ function wrapNg1Response(resp: angular.IHttpPromiseCallbackArg<any>): ResponseOp
  *        this.http = http;
  *    }
  *
- *    get(id: string): Observable<TestModel> {
- *        return this.http.get(`/${id}`)
- *            .map(resp => resp.json() as TestModel);
+ *    get(id: string): Observable<any> {
+ *        return this.http.get(`/${id}`);
  *    }
  * }
  * ```
  *
  * ## Angular 1 code: `Ng1TestService` as an entry point for `$http`
- * Use `HttpHarness.fromNg1`
+ * Use `angular-http-harness/ng1`
  *
  * ```
+ * import {HttpHarness} from "angular-http-harness";
+ * import {fromNg1} from "angular-http-harness/ng1";
+ * 
  * export class Ng1TestService extends TestService {
  * 
  *     constructor($http: angular.IHttpService) {
- *         super(HttpHarness.fromNg1($http));
+ *         super(new HttpHarness(fromNg1($http)));
+ *     }
+ *     
+ *     get(id: string): Observable<TestModel> {
+ *         return super.get(id).map(resp => resp.data);
  *     }
  * }
- *
+ * 
  * angular.module("app").service("testService", ["$http", Ng1TestService]);
  * ```
  *
  * ## Angular 2 code: `Ng2TestService` as an entry point for `Http`
- * Use `HttpHarness.fromNg2`
+ * Use `angular-http-harness/ng2`
  *
  * ```
+ * import {HttpHarness} from "angular-http-harness";
+ * import {fromNg2} from "angular-http-harness/ng2";
+ *
  * @Injectable()
  * export class Ng2TestService extends TestService {
  * 
- *     constructor(private _http: Http) {
- *         super(HttpHarness.fromNg2(_http));
+ *     constructor(_http: Http) {
+ *         super(new HttpHarness(fromNg2(_http)));
+ *     }
+ *     
+ *     get(id: string): Observable<TestModel> {
+ *         return super.get(id).map(resp => resp.json());
  *     }
  * }
- * ```
  */
 export class HttpHarness implements ObservableHttp {
-
-    static fromNg1(ng1Http: Ng1Http): HttpHarness {
-        return new HttpHarness({
-            get: (url: string, options?: RequestOptionsArgs): Observable<Response> => {
-                let p = ng1Http.get<any>(url, options);
-                return wrapNg1Promise(p);
-            },
-            post: (url: string, body: string, options?: RequestOptionsArgs): Observable<Response> => {
-                let p = ng1Http.post<any>(url, body, options);
-                return wrapNg1Promise(p);
-            },
-            put: (url: string, body: string, options?: RequestOptionsArgs): Observable<Response> => {
-                let p = ng1Http.put<any>(url, body, options);
-                return wrapNg1Promise(p);
-            },
-            delete: (url: string, options?: RequestOptionsArgs): Observable<Response> => {
-                let p = ng1Http.delete<any>(url, options);
-                return wrapNg1Promise(p);
-            },
-        });
-    };
-
-    static fromNg2(ng2Http: Http): HttpHarness {
-        return new HttpHarness(ng2Http);
-    }
 
     constructor(private _http: ObservableHttp) {
     }
 
-    get(url: string, options?: RequestOptionsArgs): Observable<Response> {
+    get(url: string, options?: any): Observable<any> {
         return this._http.get(url, options);
     }
 
-    post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+    post(url: string, body: any, options?: any): Observable<any> {
         return this._http.post(url, body, options);
     }
 
-    put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+    put(url: string, body: any, options?: any): Observable<any> {
         return this._http.put(url, body, options);
     }
 
-    delete(url: string, options?: RequestOptionsArgs): Observable<Response> {
+    delete(url: string, options?: any): Observable<any> {
         return this._http.delete(url, options);
     }
 }

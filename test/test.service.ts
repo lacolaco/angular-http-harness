@@ -12,13 +12,11 @@ export abstract class TestService {
         this.http = http;
     }
 
-    get(id: string): Observable<TestModel> {
-        return this.http.get(`/${id}`)
-            .map(resp => resp.json() as TestModel);
+    get(id: string): Observable<any> {
+        return this.http.get(`/${id}`);
     }
 
-    post(data: TestModel): Observable<TestModel> {
-        return this.http.post(`/`, JSON.stringify(data))
-            .map(resp => resp.json() as TestModel);
+    post(data: TestModel): Observable<any> {
+        return this.http.post(`/`, JSON.stringify(data));
     }
 }
