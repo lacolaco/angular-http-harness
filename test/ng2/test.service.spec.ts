@@ -1,8 +1,8 @@
-import {resetBaseTestProviders, getTestInjector} from "angular2-testing-micro/core";
-import {inject} from "angular2-testing-micro/framework/mocha";
-import {BaseRequestOptions, Http, ResponseOptions, Response} from "angular2/http";
-import {MockBackend, MockConnection} from "angular2/http/testing";
-import {provide} from "angular2/core";
+import {resetBaseTestProviders, getTestInjector, inject} from "angular2-testing-lite/core";
+import {describe, it, beforeEach} from "angular2-testing-lite/mocha";
+import {BaseRequestOptions, Http, ResponseOptions, Response} from "@angular/http";
+import {MockBackend, MockConnection} from "@angular/http/testing";
+import {provide} from "@angular/core";
 import {Ng2TestService} from "./test.service";
 import {TestModel} from "../test.model";
 import {TestService} from "../test.service";
@@ -29,7 +29,7 @@ describe("Angular 2 TestService", () => {
         assert(!!service);
     }));
 
-    it("get(id) should return mocked TestModel", done => {
+    it("get(id) should return mocked TestModel", (done: MochaDone) => {
         inject([MockBackend, TestService], (backend: MockBackend, service: TestService) => {
             backend.connections.subscribe((c: MockConnection) => {
                 let resp = <TestModel>{text: "mocked!"};
@@ -53,7 +53,7 @@ describe("Angular 2 TestService", () => {
         })(); // execute
     });
 
-    it("post(data) should return mocked TestModel", done => {
+    it("post(data) should return mocked TestModel", (done: MochaDone) => {
         inject([MockBackend, TestService], (backend: MockBackend, service: TestService) => {
             backend.connections.subscribe((c: MockConnection) => {
                 c.mockRespond(

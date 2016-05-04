@@ -1,5 +1,5 @@
-import {Injectable} from "angular2/core";
-import {Http} from "angular2/http";
+import {Injectable} from "@angular/core";
+import {Http} from "@angular/http";
 import {HttpHarness} from "../../index";
 import {fromNg2} from "../../ng2";
 import {TestService} from "../test.service";

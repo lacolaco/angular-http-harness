@@ -1,4 +1,4 @@
-import {Http} from "angular2/http";
+import {Http} from "@angular/http";
 import {ObservableHttp} from "./harness";
 
 /**
