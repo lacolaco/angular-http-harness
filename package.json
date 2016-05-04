@@ -25,10 +25,10 @@
   "author": "Suguru Inatomi <laco0416@gmail.com>",
   "license": "MIT",
   "optionalDependencies": {
-    "angular2": "*"
+    "angular2": "*",
+    "angular": "*"
   },
   "peerDependencies": {
-    "angular": "*",
     "rxjs": "*"
   },
   "devDependencies": {
